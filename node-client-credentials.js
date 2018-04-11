@@ -1,10 +1,18 @@
 var http = require("https");
 
+var url_base_autenticacao = "autenticacao.info.ufrn.br";
+var client_id = "<my_client_id>";
+var client_secret = "<my_client_secret>";
+
+var url_base = "api.info.ufrn.br";
+var versao = "<versao_api>";
+var x_api_key = "<x_api_key>";
+
 var options = {
   "method": "POST",
-  "hostname": "apitestes.info.ufrn.br",
+  "hostname": url_base_autenticacao,
   "port": null,
-  "path": "/authz-server/oauth/token?client_id=<client_id>&client_secret=<client_secret>&grant_type=client_credentials"
+  "path": "/authz-server/oauth/token?client_id=" + client_id + "&client_secret=" + client_secret + "&grant_type=client_credentials"
 };
 
 var body;
@@ -20,7 +28,7 @@ var req = http.request(options, function (res) {
     var json = JSON.parse(body.toString());
     var token = json['access_token'];
     console.log(body.toString());
-    getData("/curso/<VERSION>/modalidades-educacao", token);
+    getData("/curso/" + versao + "/modalidades-educacao", token);
   });
 });
 
@@ -31,12 +39,12 @@ function getData(path, token) {
 
   var options = {
     "method": "GET",
-    "hostname": "apitestes.info.ufrn.br",
+    "hostname": url_base,
     "port": null,
     "path": path,
     "headers": {
       "authorization": "bearer " + token,
-      "x-api-key": "X-API-KEY",
+      "x-api-key": x_api_key,
     }
   };
 
